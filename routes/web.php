@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dump(config('app.name'));
-    dump(config('app.url'));
-    dump(config('app.my_app_var'));
-    dump(config('custom.test_config'));
-    // return view('welcome');
+    $cache = app('cache');
+    $cache->put('test', 'Hello world!!!');
+    dd(Cache::get('test'));
 });
