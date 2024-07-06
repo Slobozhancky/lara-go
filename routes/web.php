@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    dump(config('app.name'));
+    dump(config('app.url'));
+    dump(config('app.my_app_var'));
+    dump(config('custom.test_config'));
+    // return view('welcome');
 });
