@@ -309,4 +309,65 @@ Route::any('get-posts', function (){
 ```php
 Route::redirect('here', 'get-posts', 302); // тут відбудеться те, якщо ми запросимо сторінку https://lara.go.loc/here, але нас перекине на сторінку https://lara.go.loc/get-posts
 ```
-12. 
+12. Наступне, що нам може бути корисне, це групування маршрутів. Як мінімум це корисно, для лаконічності, гарнішого коду, об'єднання маршрутів для однієї сутності, якщо, наприклад, потрібно використати один контролер, для однієї групи
+- Таке використання можливе за допомогою методу `prefix` класу `Route`, та методу `group` для `prefix`
+```php
+Route::prefix('admin')->group(function (){
+    Route::get('/', function () {
+        return "Admin main page";
+    });
+
+    Route::get('/posts', function () {
+        return "Admin page, for all posts";
+    });
+
+    Route::get('/posts/{id}', function ($id) {
+        return "Admin post {$id}";
+    });
+});
+```
+13. Якщо ми не хочемо при відсутності сторінки, віддавати сторінку з `404` помилкою, можна використати метод `fallback` класу `Route`.
+> Але слід розуміти, що цей маршрут слід ставити останім, бо він буде тим заключним маршрутом, який спрацює, при відсутності збігів
+```php
+Route::fallback(function (){
+  return "Fallback page";
+});
+```
+- І тут же, ми можемо використати функцію хелпер `response()` - яка може передати: **текст помилки, код відповіді від серверу, та додаткові заголовки**
+```php
+Route::fallback(function (){
+  response('fallback done', 200)
+  return "Fallback page";
+});
+```
+- А якщо це `APIшка`, то відповідь, треба повертати у форматі `JSON`. [Як це буде виглядати](https://i.imgur.com/otum9SY.png)
+```php
+Route::fallback(function (){
+    return response()->json(['title' => 'this is Fallback page'], 404);
+});
+```
+
+- Ще корисною функцією для наших цілей, може бути функція `abort()`. Вона приймає: повідомлення, яке слід вивести, та код помилки. Аще, плюс цієї функції в тому, що можна у папці `lara.go.loc/resources/views` створити папку `errors` і там створити сторінку, з тим кодом помилки, яку ми будемо передавати у функцію `abort()`. Бо функція може нас, редірекнути на цю стоірнку. [Приклад](https://i.imgur.com/csrKqb6.png)
+> Але тут є нюанс, що для того, щоб нам отримати другий параметр (тобто повідомлення, яке вона повертає) функції `abort()`, нам слід достукатись до змінної `$exception` і його методу `getMessage()`. [Приклад](https://i.imgur.com/Ox2rwM7.png)
+```php
+Route::fallback(function (){
+    abort(404, "This is 404 page");
+});
+```
+14. Ну і тут розглянемо якусь базу, з `controllers`.
+- Всі наші контролери, які ми будемо створювати, повинні наслідувати базовий контролер `lara.go.loc/app/Http/Controllers/Controller.php`
+- Створимо тестовий перший контролер `lara.go.loc/app/Http/Controllers/TestController.php`
+- Кожен контролер, повинен мати `actions`. Першим actions створимо `index` та він буде в нас запускати вид у `routes`
+```php
+class TestController extends Controller
+{
+    public function index(){
+        return view('test', ['title' => 'Title page'] );
+    }
+}
+
+```
+- А потім в роутах, будемо викликати цей контролер і обов'язково вкажемо action який має бути запущено 
+```php
+Route::get('test', [\App\Http\Controllers\TestController::class,  'index']);
+```
