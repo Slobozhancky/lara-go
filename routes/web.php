@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +14,40 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $cache = app('cache');
-    $cache->put('test', 'Hello world!!!');
-    dd(Cache::get('test'));
+    return view();
 });
+
+Route::get('test', function (){
+   return view('test', ['title'  => "Тестова сторінка"]);
+});
+
+Route::view('/static-page', 'static-page', ['title'  => "Тестова сторінка"]);
+
+Route::get('post/{id}', function ($id){
+    return "Post: {$id}";
+})->where(['id' => '[\d]+']);
+
+
+Route::get('post/{id}/comment/{comment_id}', function ($id, $comment_id){
+    return "Post: {$id}; Comment: {$comment_id}";
+});
+
+Route::get('posts', function (){
+    return "Hello this is method GET, of posts page";
+});
+
+Route::post('posts', function (){
+    return "Hello this is method POST, of posts page";
+})->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
+
+Route::match(['get', 'post'],'get-posts', function (){
+    return "Hello this is method GET|POST, of posts page";
+})->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
+Route::any('get-posts', function (){
+    return "Hello this is method ANY, of posts page";
+})->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
+
+Route::redirect('here', 'get-posts', 302);
