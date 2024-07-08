@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,24 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('admin')->group(function (){
-    Route::get('/', function () {
-        return "Admin main page";
-    });
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
 
-    Route::get('/posts', function () {
-        return "Admin page, for all posts";
-    });
+Route::get('/invoke-page', \App\Http\Controllers\InvocableController::class);
 
-    Route::get('/posts/{id}', function ($id) {
-        return "Admin post {$id}";
-    });
+Route::prefix('admin')->group(function(){
+    Route::resource('posts', PostController::class)->only('index', 'create');
 });
-
-Route::get('test', [\App\Http\Controllers\TestController::class,  'index']);
-
-Route::fallback(function (){
-    abort(404, "This is 404 page");
-});
-
-

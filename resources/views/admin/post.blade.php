@@ -5,9 +5,12 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $title ?? 'title не задано' }}</title>
+    <title>Document</title>
 </head>
 <body>
-<h1>Test page</h1>
+
+<h1>{{ route('admin.posts.{id_post}') }}</h1>
+<a href="{{ route('admin.posts.{id_post}') }}">{{ route('admin.posts.{id_post}') }}</a>
+
 </body>
 </html>
