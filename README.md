@@ -1,13 +1,14 @@
 # Laravel зміст
 
-1. [Встановлення](#Етап-1-Встановлення)
-2. [.htaccess та Конфігурації](#Етап-2-htaccess-та-Конфігурації)
+1. [Встановлення](#Встановлення)
+2. [.htaccess та Конфігурації](#htaccess-та-Конфігурації)
     - [Різниця між `local` та `production`](#Різниця-між-local-та-production)
-3. [Service Container, Provider, Facades](#етап-3-service-container-provider-facades)
-4. [Routing](#етап-4-routing)
-5. [Controllers](#етап-5-controllers)
+3. [Service Container, Provider, Facades](#service-container-provider-facades)
+4. [Routing](#routing)
+5. [Controllers](#controllers)
+5. [Views](#views)
 
-## Етап 1 Встановлення
+## Встановлення
 
 -   Перед встановленянм Laravel, слід перевірити, або оновити версію Composer, це слід робити командою `composer self-update`
 -   Тут все просто, ідем на сайт оф документації [Laravel](https://laravel.com/docs/11.x/installation), та слідуємо інструкції
@@ -15,7 +16,7 @@
     -   **Artisan** — це інтерфейс командного рядка, який постачається разом з Laravel. Він надає ряд корисних команд для розробки та управління додатком Laravel. Artisan значно спрощує виконання багатьох задач, таких як створення міграцій, генерація коду та виконання тестів.
 -   Якщо раптом нам потрібно зрозуміти які вимоги до того, чи іншої версії Laravel, це слід перевірити в розділі [Server Requirements](https://laravel.com/docs/11.x/deployment#server-requirements)
 
-## Етап 2 .htaccess та Конфігурації
+## .htaccess та Конфігурації
 
 1.  Налашутвання файлу `.htaccess` схоже на налштування цього ж файлу для звичайного MVC патерну, який я робив в [проєкт](https://github.com/Slobozhancky/blog). Тобто головною метою, є те, щоб створити **едину точку входу**, який буде направляти всі запити у папку `public`
 
@@ -111,7 +112,7 @@
 -   Використання хмарних інфраструктур або спеціалізованих серверів для розгортання.
 -   Інтеграція з сервісами моніторингу та логування, такими як New Relic, Sentry.
 
-## Етап 3 Service Container, Provider, Facades
+## Service Container, Provider, Facades
 
 ### Що таке Service Container?
 
@@ -202,7 +203,7 @@ Route::get('/', function () {
 });
 ```
 
-## Етап 4 Routing
+## Routing
 
 1. Більше інформації, про Routing, можна отримати в [документації](https://laravel.com/docs/11.x/routing)
 2. Якщо в нас виникне потреба, побачити всі шляхи маршрутів, слід скористватись командою: `php artisan route:list`
@@ -235,6 +236,12 @@ Route::get('posts/{id}', function ($id = 1){
 - Тут суть в тому, що ми передаємо наш get параметр нашого (`ID`, або `slug`) параметром в `callback` функцію, щоб потім повернути [цей параметр](https://i.imgur.com/BePpjln.png)
 - 
 7. Параметр, може бути не один, їх може бути скільки нам треба, але і не треба їх пихати дуже багато. [Приклад](https://i.imgur.com/Lo3Ova9.png)
+
+```php
+Route::get('posts/{id}/comment/{comment_id}', function ($id = 1, $comment_id){
+    return "Post: {$id}, comment ID: {$comment_id}";
+});
+```
 
 8. Також ми можемо робити перевірки, наших параметрів, в маршрутах, за допомогою регулярних виразів
 ```php
@@ -374,7 +381,7 @@ class TestController extends Controller
 Route::get('test', [\App\Http\Controllers\TestController::class,  'index']);
 ```
 
-## Етап 5 Controllers
+## Controllers
 
 1. **Приклад базового контролеру**
 
@@ -419,12 +426,13 @@ Route::get('/invoke-page', \App\Http\Controllers\InvocableController::class);
 3. Створення контролерів, за допомогою команди
 - Для цього слід використовувати команду: `php artisan make:controller <ControllerName>`
 - Якщо нам потрібно дізнатись додаткові команди для контролерів, то слід скористуватись командою: `php artisan make:controller -help`
-  - Наприклад така команда як: `php artisan make:controller <ControllerName> --resource` - допоможе створити контролер зі всіма CRUD `actions`. [Приклад](https://i.imgur.com/RdRHmgX.png)
+  - Наприклад така команда як: `php artisan make:controller <ControllerName> --resource` - допоможе створити контролер зі всіма CRUD `actions`. ![Приклад](https://i.imgur.com/RdRHmgX.png)
 - Щоб не лупити всі контролери в одну папку, то ми можемо їх створювати таким чином: `php artisan make:controller <dirName>/<ControllerName>`
-- З цим [посиланням](https://laravel.com/docs/11.x/controllers#shallow-nesting), ми можемо знайти, як будувати шляхи, для наших роутів в залежності від їх `actions`
+- З цим ![посиланням](https://laravel.com/docs/11.x/controllers#shallow-nesting), ми можемо знайти, як будувати шляхи, для наших роутів в залежності від їх `actions`
 - Приклад, створення контролеру, який відпрацює, на всі CRUD операції
 ```php
 // lara.go.loc/app/Http/Controllers/Admin/PostController.php
+
 class PostController extends Controller
 {
     /**
@@ -500,7 +508,7 @@ Route::prefix('admin')->group(function(){
 ```
 
 4. А також нашим роутам, слід вказувати метод `name` куди ми будемо передавати параметром посилання на нашу сторінку. Це буде корисно, для використання такого методу як `route(<path>)` в наших видах, щоб будувати лінки між сторінками
-- Та [приклад такого застосування](https://i.imgur.com/getjPa6.png)
+- Та ![приклад такого застосування](https://i.imgur.com/getjPa6.png)
 ```php
 Route::prefix('admin')->group(function(){
     Route::get('/', function (){
@@ -530,4 +538,72 @@ Route::prefix('admin')->group(function(){
 Route::resource('posts', PostController::class)->only('index', 'create'); // запис застосує тільки actions index та create
 Route::resource('posts', PostController::class)->except('index', 'create'); // запис застосує всі окрім actions index та create
 ```
-- 
+## Views
+
+1. Створити види можна в ручну, або за допомогою команди: `php artisan make:view <viewName>`, або якщо в папці, або папках `php artisan make:view <dirName>/<viewName>`
+2. Зазвичай папка для видів, в який вони будуть зберігатись, повинна мати назву контролеру, це звісно не обовязково, але гарний тон, та зручість компонування. Тобто, якщо в нас контролер `ProductController`, то папка для видів, повинна мати назву `views/product`
+3. Слід ще зважати на назву файлів, для самих видів. Тобто це я за те, що для кожного виду, ми маємо свої `actions` які створювали в контролерах, які відповідають кожнії з операцій `CRUD`. Тобто, якщо в нас в контролері будуть actions такі як: `index, create, edit`. То і види повинні мати назви: `index.blade.php, create.blade.php, edit.blade.php`. [Приклад](https://i.imgur.com/kEHlu7Q.png)
+4. До видів ми можемо звертатись через фасад `View::make("<dirName/viewName>")`, або за допомогою функції хелпера `view("<dirName/viewName>")`. 
+   ![Приклад](https://i.imgur.com/y6Z2mrT.png)
+5. Як хелпер `view()` так і метод `make` фасаду `View`, можуть приймати аргументом масив з даними, які ми можемо передавати у вигляді пари `"Ключ" => "Значення"`. 
+   ![Приклад](https://i.imgur.com/EMOTudU.png)
+- Є ще один спосіб передавати значення, з використанням методу `with` і ця ціпочка з `with` може бути нескінечно великою
+  ```php
+   public function create()
+   {
+   return View::make("post/create")->with(['title' => 'Create post page'])->with(['name' => 'bob']);
+   }
+   ```
+6. Тут знову повернемось до такого поняття як `іменування маршрутів`, для цього використовується такий метод як `name` і тут ми повинні вказувати параметром шлях, до нашої сторінки з `action`. А методом `route()` у шалоні `blade` вже викличемо наші маршрути
+```php
+Route::get('/post', [PostController::class, 'index'])->name('post.index');
+Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
+```
+
+```html
+<li><a href="{{ route('post.index') }}">Index page post</a></li>
+<li><a href="{{ route('post.create') }}">Create page post</a></li>
+```
+7. Якщо раптом виникне потреба, передати дані у вид зі змінних, ми можемо скористуватись такою функцією як `compact()` тільки слід звернути як саме слід передвати ці змінні, тобто як строкове значення
+    ![example](https://i.imgur.com/BL4PAiu.png)
+8. Функція `abort()` - приймає аргументом код помилки, та буде повертати нам сторінку, звідповідною помилкою
+    ![example](https://i.imgur.com/Yyn0yjh.png)
+    
+9.  Є таке поняття як `Sharing Data With All Views` - якщо коротко, то можемо розшарити дані, відразу для всіх виділ, тобто щоб змінні були доступні не більки в якомусь певному виді, а відразу для всіх. Щоб це зробити слід піти у файл `app/Providers/AppServiceProvider.php` та в методі `boot()` використати метод `share` і в прикладі нижче, змінна буде достпна у всіх видах `site_title`
+    ![example](https://i.imgur.com/CAthnyM.png)
+
+### View Composers
+
+View Composers в Laravel дозволяють тобі підготувати дані для відображення у вигляді перед тим, як цей вигляд буде рендеритися. Це дуже зручно для організації коду, особливо коли тобі потрібно передати однакові дані до багатьох виглядів або частин виглядів.
+
+### Навіщо вони потрібні?
+
+1. **Повторне використання коду**: Замість того щоб писати одну і ту ж логіку в кожному контролері для передачі певних даних у вигляд, ти можеш використати View Composer, щоб один раз визначити ці дані і автоматично передавати їх у всі потрібні вигляди.
+
+2. **Чистота контролерів**: Вони дозволяють зменшити кількість коду в контролерах, що робить код більш організованим і чистим. Контролери займаються тільки логікою бізнесу, а не підготовкою даних для відображення.
+
+3. **Глобальні дані**: Якщо є певні дані, які потрібні на всіх сторінках (наприклад, меню, налаштування сайту), View Composer дозволяє автоматично передавати ці дані у всі вигляди без необхідності робити це вручну кожного разу.
+
+### Як це працює?
+
+- Уяви, що ти хочеш показати на кожній сторінці категорії товарів. Замість того щоб викликати їх у кожному контролері, ти можеш створити View Composer, який підготує ці категорії один раз і передасть їх у всі вигляди, де вони потрібні.
+
+### Приклад:
+
+```php
+View::composer('*', function ($view) {
+    $categories = Category::all();
+    $view->with('categories', $categories);
+});
+```
+
+Цей код автоматично додає змінну `categories` у всі вигляди, і тобі не потрібно робити це вручну кожного разу.
+
+### Приклади
+
+1. Створимо перший композер, для шерінгу даних `app/Views/Composers/TestComposer.php` [example](https://i.imgur.com/1N7lhzq.png)
+2. Потім, ці дані мовинні, через файл `app/Providers/AppServiceProvider.php` передаватись на вьюшки. На Вьюшку, вони мають будти передані з методу composer(), де ми можемо зірочкою вказати, що ці дані будуть предані на всі види, або вказати кожену вьюшку почергово, та також слід обовязково вказати, з якого композера буде шерінг даних [example](https://i.imgur.com/mbbDCv3.png)
+3. Або ще один спосіб, шарити дані за допомогою `View Composers`, але з використанням хелперв `view`, та на прикладі можна побачити, що будемо шарити дна зі змінної `data`, у види **home, та create** ![example](https://i.imgur.com/pRECVmW.png)
+
+4. Прикладмабуть несамого кращого виокристання View Composer, це передавати менешкю тачим чином у всі потрібні нам види [example](https://i.imgur.com/z759T6f.png)
+5. Це в шаблонізаторі Blade, є такий прикол, що він екранує HTML, щоб цього не було, одним зі способім є те, що можна використати, такий синтаксис {!! $menu !!}, як [тут](https://i.imgur.com/0kRXiqW.png)

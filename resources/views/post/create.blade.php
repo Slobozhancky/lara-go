@@ -5,12 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>{{ $title }}</title>
 </head>
 <body>
+<h1>{{ $title }}</h1>
+{!! $nav_menu !!}
 
-<h1>{{ route('admin.posts.{id_post}') }}</h1>
-<a href="{{ route('admin.posts.{id_post}') }}">{{ route('admin.posts.{id_post}') }}</a>
+<h3>{{ $data }}</h3>
 
 </body>
 </html>

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class PostController extends Controller
 {
@@ -12,7 +13,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('admin.posts');
+        return view('post/index', [
+            "title" => "Index page post"
+        ]);
     }
 
     /**
@@ -20,7 +23,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts-create');
+        return View::make("post/create")->with(['title' => 'Create post page'])->with(['name' => 'bob']);
     }
 
     /**
@@ -28,7 +31,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        return 'Admin STORE post action';
+        //
     }
 
     /**
@@ -36,7 +39,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        return "Admin SHOW post - {$id}";
+        //
     }
 
     /**
@@ -44,7 +47,7 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        return "Admin page. I want edit post with id - {$id}";
+        return view('post.edit', ['title' => 'Edit page', 'post_id' => "$id"]);
     }
 
     /**
@@ -52,7 +55,7 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        return "Admin page. I want UPDATE post with id - {$id}, when was i get with action EDIT";
+        //
     }
 
     /**
@@ -60,6 +63,6 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        return "Admin page. I want DELETE post with id - {$id}";
+        //
     }
 }

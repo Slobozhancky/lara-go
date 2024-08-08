@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\PostController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +12,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
+use App\Http\Controllers\Post\PostController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/invoke-page', \App\Http\Controllers\InvocableController::class);
 
-Route::prefix('admin')->group(function(){
-    Route::resource('posts', PostController::class)->only('index', 'create');
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name(('home'));
+
+Route::get('/post', [PostController::class, 'index'])->name('post.index');
+Route::get('/post/create', [PostController::class, 'create'])->name('post.create');
+
+Route::get('posts/{id}/comment/{comment_id}', function ($id = 1, $comment_id){
+    return "Post: {$id}, comment ID: {$comment_id}";
 });
