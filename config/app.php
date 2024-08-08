@@ -144,6 +144,11 @@ return [
         // 'store' => 'redis',
     ],
 
+    'my_app_var' => [
+        'test1' => env('TEST_VAR'),
+        'test2' => env('TEST_VAR1')
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
