@@ -9,7 +9,6 @@
 </head>
 <body>
 <h1>{{ $title }}</h1>
-{!! $nav_menu !!}
 
 <h3>{{ $data }}</h3>
 
