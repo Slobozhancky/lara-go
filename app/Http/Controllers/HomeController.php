@@ -6,9 +6,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-
         $title = 'Home page';
-        $test = 'some info';
-        return view('home', ['title' => $title]);
+        return view('home.index', ['title' => $title]);
+    }
+
+    public function contacts()
+    {
+        $title = 'Contacts page';
+        return view('home.contacts', ['title' => $title]);
     }
 }
