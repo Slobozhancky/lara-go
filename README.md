@@ -6,7 +6,8 @@
 3. [Service Container, Provider, Facades](#service-container-provider-facades)
 4. [Routing](#routing)
 5. [Controllers](#controllers)
-5. [Views](#views)
+5. [Views](#Views)
+5. [Blade](#Blade)
 
 ## Встановлення
 
@@ -607,3 +608,258 @@ View::composer('*', function ($view) {
 
 4. Прикладмабуть несамого кращого виокристання View Composer, це передавати менешкю тачим чином у всі потрібні нам види [example](https://i.imgur.com/z759T6f.png)
 5. Це в шаблонізаторі Blade, є такий прикол, що він екранує HTML, щоб цього не було, одним зі способім є те, що можна використати, такий синтаксис {!! $menu !!}, як [тут](https://i.imgur.com/0kRXiqW.png)
+
+## Blade
+
+Привіт! Blade — це шаблонний двигун, який використовується в Laravel для створення динамічних HTML-сторінок. Він забезпечує зручний спосіб включення логіки в шаблони, дозволяючи розробникам легко створювати гнучкі й багаторазові компоненти інтерфейсу користувача.
+
+### Основні особливості Blade:
+
+1. **Розширення `.blade.php`**: Всі файли шаблонів Blade мають розширення `.blade.php`. Наприклад, `welcome.blade.php`.
+
+2. **Вставка змінних**:
+   - Щоб відобразити значення змінної у шаблоні, використовуються подвійні фігурні дужки `{{ }}`.
+   - Blade автоматично екранує будь-який вивід, що запобігає XSS-атакам.
+
+   ```php
+   <h1>{{ $title }}</h1>
+   ```
+
+3. **Розширення шаблонів (Layout)**:
+   - Blade дозволяє створювати базові шаблони, які можуть бути розширені іншими шаблонами.
+
+   Базовий шаблон (`layouts/app.blade.php`):
+   ```php
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>@yield('title')</title>
+   </head>
+   <body>
+       @yield('content')
+   </body>
+   </html>
+   ```
+
+   Шаблон, що розширює базовий шаблон:
+   ```php
+   @extends('layouts.app')
+
+   @section('title', 'Welcome Page')
+
+   @section('content')
+       <h1>Welcome to Laravel</h1>
+   @endsection
+   ```
+
+4. **Умовні конструкції**:
+   - Blade підтримує стандартні умовні конструкції `if`, `elseif`, `else`, а також спеціальну конструкцію `@unless`.
+
+   ```php
+   @if ($user->isAdmin())
+       <p>Welcome, Admin!</p>
+   @else
+       <p>Welcome, User!</p>
+   @endif
+   ```
+
+5. **Цикли**:
+   - Blade підтримує всі стандартні цикли, такі як `for`, `foreach`, `while`, `forelse`.
+
+   ```php
+   @foreach ($users as $user)
+       <p>{{ $user->name }}</p>
+   @endforeach
+   ```
+
+6. **Включення інших шаблонів**:
+   - Ви можете включати інші шаблони в свій шаблон за допомогою директиви `@include`.
+
+   ```php
+   @include('partials.header')
+   ```
+
+7. **Компоненти та слоти**:
+   - Blade дозволяє створювати компоненти для повторного використання частин коду з використанням слотів.
+
+   ```php
+   <!-- components/alert.blade.php -->
+   <div class="alert alert-{{ $type }}">
+       {{ $slot }}
+   </div>
+   ```
+
+   Використання компоненту:
+   ```php
+   @component('components.alert', ['type' => 'danger'])
+       This is an error message.
+   @endcomponent
+   ```
+
+8. **Швидка вставка PHP**:
+   - Якщо потрібно виконати трохи PHP-коду, можна використати директиву `@php` або старий добрий спосіб відкриття PHP-тега.
+
+   ```php
+   @php
+       $value = 1 + 1;
+   @endphp
+   ```
+
+9. **Коментарі**:
+   - Коментарі у Blade можуть бути додані за допомогою `{{-- коментар --}}`. Вони не будуть відображені в згенерованому HTML.
+
+   ```php
+   {{-- Це коментар, який не буде виведений в HTML --}}
+   ```
+
+10. Щоб уникнути екранування HTML-коду в шаблонах Blade і дозволити відображення сирого HTML, можна використовувати подвійні фігурні дужки з додатковим знаком оклику `{!! !!}`. Цей синтаксис вказує Blade, що HTML-код всередині не повинен бути екранованим.
+
+```php
+{!! $htmlContent !!}
+```
+
+11. Так, у Blade можна використовувати методи всередині шаблону. Це дозволяє виконувати різні дії безпосередньо в шаблоні, такі як виклик методів моделей, функцій або обробка даних.
+
+### Виклик методів у Blade:
+
+- **Методи моделей або об'єктів**:
+   Якщо у вас є об'єкт, ви можете викликати його методи прямо у шаблоні Blade.
+
+   ```php
+   <p>{{ $user->name }}</p>
+   <p>{{ $user->getFullName() }}</p>
+   ```
+
+- **Глобальні функції PHP**:
+   Можна використовувати стандартні PHP-функції.
+
+   ```php
+   <p>{{ strtoupper($string) }}</p>
+   <p>{{ date('Y-m-d') }}</p>
+   ```
+
+-  **Користувацькі функції**:
+   Якщо у вас є якась користувацька функція, ви також можете викликати її у шаблоні.
+
+   ```php
+   <p>{{ myCustomFunction($data) }}</p>
+   ```
+
+- **Ланцюжкові виклики**:
+   Ви можете викликати методи по ланцюжку, якщо кожен метод повертає об'єкт, на якому викликається наступний метод.
+
+   ```php
+   <p>{{ $user->posts()->latest()->first()->title }}</p>
+   ```
+
+- **Обробка даних у шаблоні**:
+   Ви можете робити просту обробку даних, наприклад, додавати значення або проводити інші операції.
+
+   ```php
+   <p>{{ $user->posts->count() + 5 }}</p>
+
+12. У Blade можна легко інтегрувати JavaScript-бібліотеки так само, як і в звичайних HTML-документах. Laravel Blade не накладає жодних обмежень на використання JavaScript, тому ви можете додавати скрипти, підключати бібліотеки, і виконувати інші дії з JavaScript прямо в шаблонах.
+
+### Основні способи використання JavaScript бібліотек у Blade:
+
+- **Підключення JavaScript бібліотек через CDN**:
+   Найпростіший спосіб підключити бібліотеку — це використати CDN (Content Delivery Network).
+
+   ```blade
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Document</title>
+       <!-- Підключення jQuery з CDN -->
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   </head>
+   <body>
+       <h1>Hello, world!</h1>
+       <script>
+           $(document).ready(function() {
+               alert('jQuery is working!');
+           });
+       </script>
+   </body>
+   </html>
+   ```
+
+- **Підключення JavaScript файлів з локального сховища**:
+   Якщо у вас є власні JavaScript файли, ви можете підключати їх за допомогою `asset()` функції або використовуючи стандартний шлях до файлу.
+
+   ```blade
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Document</title>
+       <!-- Підключення власного скрипта -->
+       <script src="{{ asset('js/custom.js') }}"></script>
+   </head>
+   <body>
+       <h1>Hello, world!</h1>
+   </body>
+   </html>
+   ```
+
+- **Вставка JavaScript коду безпосередньо у шаблон**:
+   Ви також можете написати JavaScript прямо в шаблоні, що корисно для простих скриптів.
+
+   ```blade
+   <script>
+       document.addEventListener('DOMContentLoaded', function() {
+           console.log('Page is loaded');
+       });
+   </script>
+   ```
+
+- **Використання Blade директив для умовного додавання скриптів**:
+   Blade дозволяє умовно додавати JavaScript код на основі певних умов. Це корисно, якщо ви хочете підключати скрипти тільки для певних сторінок або частин додатку.
+
+   ```blade
+   @if($user->isAdmin())
+       <script>
+           alert('Admin access granted');
+       </script>
+   @endif
+   ```
+
+- **Використання секцій та стеків**:
+   Blade надає спеціальні директиви для роботи з секціями та стеком скриптів, що робить код більш організованим, особливо коли йдеться про великі проекти.
+
+   **Секції**:
+   ```blade
+   @section('scripts')
+       <script src="{{ asset('js/some-library.js') }}"></script>
+   @endsection
+   ```
+
+   Використовуйте `@yield('scripts')` або `@stack('scripts')` в основному шаблоні для вставки скриптів:
+
+   ```blade
+   <head>
+       <title>My Laravel App</title>
+       @yield('scripts')
+   </head>
+   ```
+
+   **Стек**:
+   ```blade
+   @push('scripts')
+       <script src="{{ asset('js/additional-library.js') }}"></script>
+   @endpush
+   ```
+
+   І знову використовуйте `@stack('scripts')` для відображення всіх підключених скриптів у певній частині шаблону:
+
+   ```blade
+   <body>
+       <h1>Page Content</h1>
+       @stack('scripts')
+   </body>
+   ```
