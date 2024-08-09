@@ -16,5 +16,6 @@ use App\Http\Controllers\Post\PostController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name(('home'));
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name(('home.index'));
+Route::get('/contacts', [\App\Http\Controllers\HomeController::class, 'contacts'])->name(('home.contacts'));
 
