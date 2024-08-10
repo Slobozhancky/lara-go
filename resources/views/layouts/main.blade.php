@@ -5,12 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    @vite(['resources/bootstrap/bootstrap.min.css', 'resources/bootstrap/bootstrap.min.js', 'resources/css/main.css'])
     <title>@yield('title', 'Default title')</title>
-
-    @isset($description)
-        <meta http-equiv="X-UA-Compatible" content="{{ $description }}">
-    @endisset
 </head>
 <body>
 
@@ -42,6 +38,6 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('bootstrap/bootstrap.min.js') }}"></script>
 </body>
 </html>
