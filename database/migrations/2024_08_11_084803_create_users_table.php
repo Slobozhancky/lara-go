@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+//            $table->id('product_id');
+            $table->increments('user_id');
+            $table->string('user_name', 150);
+            $table->smallInteger('age')->unsigned();
+            $table->string('phone',14 )->unique()->nullable();
             $table->timestamps();
+            $table->timestamp('some_update')->useCurrent()->useCurrentOnUpdate();
         });
     }
-
     /**
+
      * Reverse the migrations.
      */
     public function down(): void
