@@ -10,13 +10,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-//        $max_populations = DB::table('country')->max('population');
-//        $country = DB::table('country')->where('population', '=', $max_populations)->get();
-        $count = DB::table('city')->count('ID');
-        dump($count);
-
+        $users = DB::table('users')->get();
         $title = 'Home page';
-//        return view('home.index', compact('users', 'title'));
+        return view('home.index', compact('users', 'title'));
     }
 
     public function contacts()
