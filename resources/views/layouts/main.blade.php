@@ -23,6 +23,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('home.contacts') }}">Contacts</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('world/cities') }}">Cities</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('world/countries') }}">Countries</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('post.index') }}">Posts</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -32,6 +41,8 @@
     <main>
         @yield('home')
         @yield('contacts')
+        @yield('world')
+        @yield('post')
     </main>
 
     @include('layouts.components.footer', ['telegram' => "https://t.me/slobozhancky"])

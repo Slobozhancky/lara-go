@@ -18,4 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name(('home.index'));
 Route::get('/contacts', [\App\Http\Controllers\HomeController::class, 'contacts'])->name(('home.contacts'));
+Route::get('/posts', [\App\Http\Controllers\Post\PostController::class, 'index'])->name(('post.index'));
+Route::prefix('world')->group(function () {
+    Route::get('/cities', [\App\Http\Controllers\World\WorldController::class, 'cities'])->name('world/cities');
+    Route::get('/countries', [\App\Http\Controllers\World\WorldController::class, 'countries'])->name('world/countries');
+});
+
 
