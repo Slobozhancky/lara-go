@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -13,9 +14,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('post/index', [
-            "title" => "Index page post"
-        ]);
+        $title = 'Posts page';
+        $posts = Post::query()->get()->toArray();
+//        dump($posts);
+
+        return view('post/index', compact('posts', 'title'));
     }
 
     /**
