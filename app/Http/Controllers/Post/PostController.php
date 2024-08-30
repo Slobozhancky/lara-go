@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Mockery\Exception;
 
 class PostController extends Controller
 {
@@ -16,8 +17,6 @@ class PostController extends Controller
     {
         $title = 'Posts page';
         $posts = Post::query()->get()->toArray();
-//        dump($posts);
-
         return view('post/index', compact('posts', 'title'));
     }
 
@@ -26,7 +25,14 @@ class PostController extends Controller
      */
     public function create()
     {
-        return View::make("post/create")->with(['title' => 'Create post page'])->with(['name' => 'bob']);
+
+        Post::query()->create([
+            'title' => 'new title 2 Eloquent ORM',
+            'slug' => 'new title slug 3 Eloquent ORM',
+            'content' => 'new title content Eloquent ORM',
+            'category_id' => rand(1,2)
+        ]);
+
     }
 
     /**
@@ -34,7 +40,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Post::query()->create([
+            'title' => $request->title,
+            'slug' => $request->slug,
+            'content' => $request->input('content'),
+            'category_id' => $request->category_id
+        ]);
+
+        return $request->all();
     }
 
     /**
@@ -42,7 +55,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**
@@ -58,7 +71,8 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Post::query()->where('id', $id)->update($request->all());
+        return 'OK';
     }
 
     /**
@@ -66,6 +80,6 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return Post::destroy($id);
     }
 }
