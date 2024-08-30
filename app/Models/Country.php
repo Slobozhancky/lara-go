@@ -10,5 +10,6 @@ class Country extends Model
     use HasFactory;
 
     protected $table = 'country';
-    protected $primaryKey = 'Code';
+//    protected $primaryKey = 'Code';
+    protected $hidden = ['SurfaceArea', 'IndepYear'];
 }

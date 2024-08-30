@@ -23,8 +23,7 @@ class WorldController extends Controller
         $countries = Country::query()
             ->where('population', ">", "200000")
             ->orderBy('Population', 'desc')
-            ->get(['Name','Code', 'Population', 'Region'])
-            ->toArray();
+            ->get(['Name','Code', 'Population', 'Region']);
 
         return view('world.countries' , compact('countries' , 'title'));
     }
