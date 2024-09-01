@@ -17,6 +17,7 @@
 14. [Eloquent ORM](#Eloquent-ORM)
 15. [Collection](#Collection)
 16. [One to One](#One-to-One)
+17. [One to many](#One-to-many)
 
 ## Встановлення
 
