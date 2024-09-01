@@ -6,13 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WorldController extends Controller
 {
     public function cities ()
     {
         $title = 'Cities page';
-        $cities = City::query()->limit(30)->get(['ID', 'Name'])->toArray();
+
+        $cities = (City::query()->limit(50)->get())->filter(function ($val, $key){
+            return $val['Population'] > 1_000_000;
+        });
+
         return view('world.cities' , compact('cities' , 'title'));
     }
 
