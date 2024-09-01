@@ -14,8 +14,8 @@ class WorldController extends Controller
     {
         $title = 'Cities page';
 
-        $cities = (City::query()->limit(50)->get())->filter(function ($val, $key){
-            return $val['Population'] > 1_000_000;
+        $cities = (City::query()->limit(50)->get())->filter(function ($city, $key){
+            return $city['Population'] > 1_000_000;
         });
 
         return view('world.cities' , compact('cities' , 'title'));
