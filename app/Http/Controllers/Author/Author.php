@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Catalog;
+namespace App\Http\Controllers\Author;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class Product extends Controller
+class Author extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = \App\Models\Catalog\Product::all();
-        dump($products);
-
-        $title = 'Posts page';
-
-        return view('catalog/index', compact('title'));
+        $books= \App\Models\Author\Author::find(1)->books;
+        dump($books->toArray());
+        foreach($books as $book){
+            echo($book->name);
+        }
     }
 
     /**
@@ -41,12 +40,7 @@ class Product extends Controller
      */
     public function show(string $id)
     {
-        $title = "Post $id";
-        $product = \App\Models\Catalog\Product::find($id)->category->title;
-
-        dump($product);
-
-        return view('catalog/show', compact('title'));
+        //
     }
 
     /**
@@ -54,9 +48,7 @@ class Product extends Controller
      */
     public function edit(string $id)
     {
-        dump($id);
-        $category = \App\Models\Catalog\Product::find($id);
-        dump($category->category);
+        //
     }
 
     /**

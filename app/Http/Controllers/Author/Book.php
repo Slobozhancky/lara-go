@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Catalog;
+namespace App\Http\Controllers\Author;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class Category extends Controller
+class Book extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = \App\Models\Catalog\Category::find(1)->products;
-        dump($products->toArray());
+        //
     }
 
     /**
