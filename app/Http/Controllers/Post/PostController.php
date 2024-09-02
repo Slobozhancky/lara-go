@@ -15,9 +15,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $title = 'Posts page';
-        $posts = Post::query()->get()->toArray();
-        return view('post/index', compact('posts', 'title'));
+//        $title = 'Posts page';
+//        $posts = Post::query()->get()->toArray();
+//        return view('post/index', compact('posts', 'title'));
     }
 
     /**

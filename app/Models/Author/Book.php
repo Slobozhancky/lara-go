@@ -13,7 +13,7 @@ class Book extends Model
 
     protected $table = 'books';
 
-    public function authors(): belongsTo
+    public function author(): belongsTo
     {
         return $this->belongsTo(Author::class, 'authors_id');
     }
