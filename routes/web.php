@@ -20,12 +20,14 @@ Route::get('/' , [\App\Http\Controllers\HomeController::class , 'index'])->name(
 Route::get('/contacts' , [\App\Http\Controllers\HomeController::class , 'contacts'])->name(('home.contacts'));
 
 Route::prefix('world')->group(function () {
-    Route::get('/cities' , [\App\Http\Controllers\World\WorldController::class , 'cities'])->name('world/cities');
-    Route::get('/countries' , [\App\Http\Controllers\World\WorldController::class , 'countries'])->name('world/countries');
+    Route::get('/cities' , [\App\Http\Controllers\World\WorldController::class , 'cities'])->name('world.cities');
+    Route::get('/countries' , [\App\Http\Controllers\World\WorldController::class , 'countries'])->name('world.countries');
 });
 
-Route::prefix('authors')->group(function (){
-   Route::get('/', [\App\Http\Controllers\Author\Author::class, 'index']);
+
+Route::prefix('books')->group(function (){
+   Route::get('/', [\App\Http\Controllers\Author\BooksController::class, 'books'])->name('books.index');
+   Route::get('/author/{id}', [\App\Http\Controllers\Author\BooksController::class, 'author'])->name('books.author');
 });
 
 
