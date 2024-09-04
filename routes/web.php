@@ -30,5 +30,11 @@ Route::prefix('books')->group(function (){
    Route::get('/author/{id}', [\App\Http\Controllers\Author\BooksController::class, 'author'])->name('books.author');
 });
 
+Route::prefix('movie')->group(function (){
+   Route::get('/', [\App\Http\Controllers\Movie\MovieController::class, 'movie'])->name('movie.movie');
+   Route::get('/author/{id}', [\App\Http\Controllers\Author\BooksController::class, 'author'])->name('books.author');
+});
+
+
 
 
