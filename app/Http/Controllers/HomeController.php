@@ -11,6 +11,8 @@ class HomeController extends Controller
     public function index()
     {
         $users = DB::table('users')->get();
+
+        dump($users);
         $title = 'Home page';
         return view('home.index', compact('users', 'title'));
     }
